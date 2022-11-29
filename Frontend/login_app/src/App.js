@@ -4,16 +4,32 @@ import LoginForm from './LoginForm';
 import LoginAttemptList from './LoginAttemptList';
 
 const App = () => {
-  let [loginAttempts, setLoginAttempts] = useState([]);
+  const [loginAttempts, setLoginAttempts] = useState([]);
+  const [loginAttemptsMaster, setLoginAttemptsMaster] = useState([]);
 
-  setLoginAttempts = (data) => {
-    loginAttempts.push(data.login);
+  const pushLoginAttempt = (data) => {
+    setLoginAttemptsMaster(loginArray => [...loginArray, data.login]);
+    setLoginAttempts(loginArray => [...loginArray, data.login]);
+  }
+
+  const filterList = (filterTerm) => {
+    if (filterTerm.trim().length > 0) {
+      setLoginAttempts(loginAttempts.filter(x => x.includes(filterTerm)));
+    } else {
+      setLoginAttempts(loginAttemptsMaster);
+    }
+  }
+
+  const clearList = () => {
+    setLoginAttemptsMaster([]);
+    setLoginAttempts([]);
   }
 
   return (
     <div className="App">
-      <LoginForm onSubmit={setLoginAttempts} />
-      <LoginAttemptList attempts={loginAttempts} />
+      <LoginForm onSubmit={({login, password}) => pushLoginAttempt({login, password})} />
+      <button onClick={clearList}>Clear</button>
+      <LoginAttemptList attempts={loginAttempts} filter={filterTerm => filterList(filterTerm)} />
     </div>
   );
 };

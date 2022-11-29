@@ -1,18 +1,19 @@
 import React from "react";
 import "./LoginAttemptList.css";
 
-const LoginAttempt = (props) => <li {...props}>{props.children}</li>;
-
-const LoginAttemptList = (props) => {
-	return(
+const LoginAttemptList = (props) => 
+{
+	return (
 		<div className="Attempt-List-Main">
 			<p>Recent activity</p>
-			<input type="input" placeholder="Filter..." />
+			<input type="input" placeholder="Filter..." onChange={event => props.filter(event.target.value)} />
 			<ul className="Attempt-List">
-				<LoginAttempt children={props.attempts}></LoginAttempt>
+				{props.attempts.map(login =>
+					<li>{login}</li>
+				)}
 			</ul>
 		</div>
-	)
-};
+	);
+}
 
 export default LoginAttemptList;
